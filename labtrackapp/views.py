@@ -21,7 +21,7 @@ class Loginpage(View):
             if login_obj.usertype=="admin":
                 return HttpResponse('''<script>alert("admin_home");window.location=("/Homepage")</script>''')
             elif login_obj.usertype=="labmanager":
-                return HttpResponse('''<script>alert("labmanager_home");window.location=("/Homepage_hsptl")</script>''')
+                return HttpResponse('''<script>alert("labmanager_home");window.location=("/Managerhome")</script>''')
             else:
                 return HttpResponse('''<script>("invalid user");window.location=("/")</script>''')
         except LoginTable.DoesNotExist:
@@ -107,6 +107,11 @@ class Editassistant(View):
 
         return HttpResponse('''<script>alert("Updated Successfully");window.location=("/Labassistant")</script>''')
 
+class Deleteassistant(View):
+    def get(self,request,id):
+        c=LoginTable.objects.get(id=id)
+        c.delete()
+        return HttpResponse('''<script>alert("Deleted Successfully");window.location=("/Labassistant")</script>''')
 
     
     
@@ -146,6 +151,13 @@ class Editmanager(View):
         obj.save()
 
         return HttpResponse('''<script>alert("Updated Successfully");window.location=("/Labmanager")</script>''')
+    
+class Deletemanager(View):
+    def get(self,request,id):
+        c=LoginTable.objects.get(id=id)
+        c.delete()
+        return HttpResponse('''<script>alert("Deleted Successfully");window.location=("/Labmanager")</script>''')
+
 
 
     
@@ -156,18 +168,56 @@ class User(View):
     
 #######################################################################################
 
+
 class Addstock(View):
     def get(self, requst):
         return render(requst,'labmanager/addpage.html')
+    def post(self,request):
+        c=LabmanagerTable.objects.get(LOGINID__id=request.session['userid'])
+        form=InventoryForm(request.POST)
+        if form.is_valid():
+            f=form.save(commit=False)
+            f.LABMANAGERID=c
+            f.save()
+            return HttpResponse('''<script>alert("Registered Successfully");window.location=("/Viewstock")</script>''')
+        
+    
+    
+
 class Editstock(View):
-    def get(self, requst):
-        return render(requst,'labmanager/editpage.html')   
+    def get(self, request,id):
+        c=InventoryTable.objects.get(id=id)
+        return render(request,'labmanager/editpage.html', {'stock':c})
+     
+    def post(self, request, id):
+        obj = InventoryTable.objects.get(id=id)
+
+        obj.itemname = request.POST.get('itemname')
+        obj.itemdiscription = request.POST.get('itemdiscription')
+        obj.quantity= request.POST.get('quantity')
+
+        
+
+        obj.save()
+
+        return HttpResponse('''<script>alert("Updated Successfully");window.location=("/Viewstock")</script>''')
+    
+    
+
+
 class Deletestock(View):
-    def get(self, requst):
-        return render(requst,'labmanager/deletepage.html')
+    def get(self, request,id):
+        c=InventoryTable.objects.get(id=id)
+        c.delete()
+        return HttpResponse('''<script>alert("deleted Successfully");window.location=("/Viewstock")</script>''')
+    
+
 class Viewstock(View):
-    def get(self, requst):
-        return render(requst,'labmanager/stockpage.html')
+    def get(self, request):
+        c=InventoryTable.objects.filter(LABMANAGERID__LOGINID__id = request.session['userid'])
+        return render(request,'labmanager/stockpage.html', {'stock':c})
+    
+
 class Managerhome(View):
-    def get(self, requst):
-        return render(requst,'labmanager/managerhome.html')
+    def get(self, request):
+        return render(request,'labmanager/managerhome.html')

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body><table>
+    <tr>
+        <th>si no</th>
+        <th>Name</th>
+        <th>discription</th>
+        <th>quantity</th>
+        
+        <th>    <a href="/Addstock"> Add products</a></th>
+    </tr>
+        {% for i in stock %}
+
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{ i.itemname }}</td>
+        <td>{{ i.itemdiscription }}</td>
+        <td>{{ i.quantity}}</td>
+        
+        <td>
+           <a href="/Editstock/{{ i.id }}">Edit</button>
+            <a href="/Deletestock/{{ i.id }}" onclick="return confirm('are you sure you want to delete')">Delete</button>
+        </td>
+    </tr>
+     {% endfor %}
+    </table>
+</body>
+</html>

@@ -25,7 +25,7 @@
         <td>{{ i.email }}</td>
         <td>
             <a href="/Editassistant/{{ i.id }}">Edit</button>
-            <a href="/deleteassistant/{{ i.id }}">Delete</button>
+            <a href="/Deleteassistant/{{ i.LOGINID.id }}" onclick="return confirm('are you sure you want to delete')">Delete</button>
         </td>
     </tr>
     {% endfor %}

@@ -15,3 +15,8 @@ class ManagerForm(ModelForm):
     class Meta:
         model=LabmanagerTable
         fields='__all__'
+        
+class InventoryForm(ModelForm):
+    class Meta:
+        model=InventoryTable
+        fields='__all__'

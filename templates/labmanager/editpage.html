@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body><center>
+    <h1><b>add products</b></h1></center>
+    <form method="post">
+        {% csrf_token %}
+        <label for="username">item name</label>
+    <input type="text" name="itemname" value="{{stock.itemname}}"><br>
+    <label for="quantity">quantity</label>
+    <input type="number" name="quantity"><br>
+    <label for="discription">discription</label>
+    <input type="text" name="itemdiscription"><br>
+    <input type="submit" value="add">
+</form>
+</body>
+</html>

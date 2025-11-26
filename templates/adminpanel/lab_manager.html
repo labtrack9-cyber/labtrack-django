@@ -10,8 +10,8 @@
         <th>si no</th>
         <th>Name</th>
         <th>staff id</th>
-        <th>department</th>
         <th>email</th>
+        <th>Lab</th>
         <th>    <a href="/Addmanager"> Add Lab Manager</a></th>
     </tr>
         {% for i in manager %}
@@ -20,12 +20,11 @@
         <td>{{forloop.counter}}</td>
         <td>{{ i.name }}</td>
         <td>{{ i.staffid }}</td>
-        <td>{{ i.department }}</td>
         <td>{{ i.email }}</td>
         <td>{{ i.LABID.labname }}</td>
         <td>
-            <button>Edit</button>
-            <button>Delete</button>
+           <a href="/Editmanager/{{ i.id }}">Edit</button>
+            <a href="/Deletemanager/{{ i.LOGINID.id }}" onclick="return confirm('are you sure you want to delete')">Delete</button>
         </td>
     </tr>
      {% endfor %}
