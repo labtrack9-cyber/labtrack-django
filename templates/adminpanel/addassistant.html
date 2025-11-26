@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+                {% csrf_token %}
+        <label for="username">name</label>
+    <input type="text" name="name"><br>
+    
+      <label for="department">Choose Lab</label>
+    <select name="LABID" required>
+        <option value="">-- Select Lab --</option>
+        {% for i in lab %}
+            <option value="{{ i.id }}">{{ i.labname }}</option>
+        {% endfor %}
+    </select><br>
+    <label for="staffid">Staff Id</label>
+    <input type="text" name="staffid"><br>
+    <label for="email">email</label>
+    <input type="email" name="email"><br>
+    
+    <label for="">password</label>
+    <input type="password" name="password"><br>
+    <input type="submit" value="register">
+    
+    </form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>si no</th>
+        <th>Name</th>
+        <th>staff id</th>
+        <th>department</th>
+        <th>email</th>
+        <th>    <a href="/Addassistant"> Add Lab Assistant</a></th>
+    </tr>
+    {% for i in assistant %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.staffid }}</td>
+        <td>{{ i.department }}</td>
+        <td>{{ i.email }}</td>
+        <td>
+            <a href="/Editassistant/{{ i.id }}">Edit</button>
+            <a href="/deleteassistant/{{ i.id }}">Delete</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
