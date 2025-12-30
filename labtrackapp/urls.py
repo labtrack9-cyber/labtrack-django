@@ -27,5 +27,11 @@ urlpatterns = [
      path('Viewstock', Viewstock.as_view(), name='Viewstock'),
      path('Managerhome', Managerhome.as_view(), name='Managerhome'),
 
+
+     ################################################ API #########################################
+
+     path('userreg', UserReg_api.as_view()),
+     path('login', LoginAPI.as_view()),
+
 ]
 

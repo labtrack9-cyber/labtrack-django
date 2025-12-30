@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
+from labtrackapp.serializers import LoginTableSerializer, UserTableSerializer
 from labtrackapp.forms import *
 from labtrackapp.models import *
 
@@ -221,3 +222,64 @@ class Viewstock(View):
 class Managerhome(View):
     def get(self, request):
         return render(request,'labmanager/managerhome.html')
+    
+    ###############################################################################3
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class UserReg_api(APIView):
+    def post(self, request):
+        print("#############", request.data)
+
+        user_serial = UserTableSerializer(data=request.data)
+        login_serial = LoginTableSerializer(data=request.data)
+
+        data_valid = user_serial.is_valid()
+        login_valid = login_serial.is_valid()
+
+        if data_valid and login_valid:
+            login_profile = login_serial.save(usertype='USER')
+
+#assign the login profile to the usertable and save the usertable
+            user_serial.save(LOGINID=login_profile)
+
+#return the serializer user data to the response
+            return Response(user_serial.data, status=status.HTTP_201_CREATED)
+        
+        return Response({
+            'login_error': login_serial.errors if not login_valid else None,
+            'user_error': user_serial.errors if not data_valid else None
+        },status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LoginAPI(APIView):
+    def post(self, request):
+        print(request.data)
+
+        response_dict = {}
+
+        #get data from the request
+        username = request.data.get("Username")
+        password = request.data.get("Password")
+
+        #validate input
+        if not username or not password:
+            response_dict["message"] = "failed"
+            return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
+        
+        #fetch the user from logintable
+        t_user = LoginTable.objects.filter(username=username,password=password).first()
+
+        if not t_user:
+            response_dict["message"] = "failed"
+            return Response(response_dict, status=status.HTTP_401_UNAUTHORIZED)
+        
+        else:
+            response_dict["message"]="success"
+            response_dict["login_id"] = t_user.id
+            response_dict["Usertype"] = t_user.usertype
+
+            return Response(response_dict, status=status.HTTP_200_OK)

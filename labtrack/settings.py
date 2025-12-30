@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ypgf13=)g9qm8ilvsg(z*9#96izv4e_w!-=_vrfw*12e1!b6c#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'labtrackapp'
+    'labtrackapp',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
