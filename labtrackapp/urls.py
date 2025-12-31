@@ -32,6 +32,9 @@ urlpatterns = [
 
      path('userreg', UserReg_api.as_view()),
      path('login', LoginAPI.as_view()),
-
+     path('complaint/<int:id>', ComplaintAPI.as_view()),
+     path('feedback/<int:id>',FeedbackAPI.as_view()),
+     path('assignedlab/<int:id>',AssignedlabAPI.as_view()),
+     path('task/<int:id>',ViewTaskAPI.as_view()),
 ]
 

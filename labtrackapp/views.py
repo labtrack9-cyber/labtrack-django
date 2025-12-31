@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from labtrackapp.serializers import LoginTableSerializer, UserTableSerializer
+from labtrackapp.serializers import ComplaintTableSerializer, FeedbackTableSerializer, LoginTableSerializer, StudentlabassignTableSerializer, TaskTableSerializer, UserTableSerializer
 from labtrackapp.forms import *
 from labtrackapp.models import *
 
@@ -283,3 +283,48 @@ class LoginAPI(APIView):
             response_dict["Usertype"] = t_user.usertype
 
             return Response(response_dict, status=status.HTTP_200_OK)
+        
+class ComplaintAPI(APIView):
+    def get(self,request,id):
+        Complaints = ComplaintTable.objects.filter(user__LOGINID__id=id)
+
+        serializer = ComplaintTableSerializer(Complaints, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self,request,id):
+        user = UserTable.objects.get(LOGINID__id=id)
+        
+        serializer = ComplaintTableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
+            print(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class FeedbackAPI(APIView):
+     def post(self,request,id):
+        print(request.data)
+        user = UserTable.objects.get(LOGINID__id=id)
+        
+        serializer = FeedbackTableSerializer(data=request.data) 
+        if serializer.is_valid():
+            serializer.save(user=user)
+            print(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class AssignedlabAPI(APIView):
+    def get(self,request,id):
+        c=StudentlabassignTable.objects.filter(USERID__LOGINID__id = id)
+        d=StudentlabassignTableSerializer(c, many=True)
+        print(d.data)
+        return Response(d.data,status=status.HTTP_200_OK)
+    
+class ViewTaskAPI(APIView):
+    def get(self,request,id):
+        e=TaskTable.objects.filter(USERID__LOGINID__id = id)
+        f=TaskTableSerializer(e, many=True)
+        print("---------------------",f.data)
+        return Response(f.data,status=status.HTTP_200_OK)

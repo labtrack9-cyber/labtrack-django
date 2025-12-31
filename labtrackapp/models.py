@@ -51,9 +51,12 @@ class TaskTable(models.Model):
     USERID=models.ForeignKey(UserTable,on_delete=models.CASCADE,null=True,blank=True)
     experiment=models.CharField(max_length=100,null=True,blank=True)
     status=models.CharField(max_length=100,null=True,blank=True)
+    date=models.DateField(null=True,blank=True, auto_now_add=True)
+    duedate=models.DateField(null=True,blank=True)
+
 class LabassignTable(models.Model):
     LABASSISTENTID=models.ForeignKey(LabassistantTable,on_delete=models.CASCADE,null=True,blank=True)
-    lab=models.CharField(max_length=100,null=True,blank=True)
+    LABID=models.ForeignKey(LabTable,on_delete=models.CASCADE,null=True,blank=True)
 class NotificationTable(models.Model):
     USERID=models.ForeignKey(UserTable,on_delete=models.CASCADE,null=True,blank=True)
     LABASSISTENTID=models.ForeignKey(LabassistantTable,on_delete=models.CASCADE,null=True,blank=True)
@@ -61,6 +64,8 @@ class NotificationTable(models.Model):
     notificationdetails=models.CharField(max_length=100,null=True,blank=True)
 class StudentlabassignTable(models.Model):
     USERID=models.ForeignKey(UserTable,on_delete=models.CASCADE,null=True,blank=True)
-    lab=models.CharField(max_length=100,null=True,blank=True)
+    LABID=models.ForeignKey(LabTable,on_delete=models.CASCADE,null=True,blank=True)
+    time=models.DateTimeField(null=True,blank=True)
+
 
 
