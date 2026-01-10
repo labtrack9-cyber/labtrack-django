@@ -36,5 +36,8 @@ urlpatterns = [
      path('feedback/<int:id>',FeedbackAPI.as_view()),
      path('assignedlab/<int:id>',AssignedlabAPI.as_view()),
      path('task/<int:id>',ViewTaskAPI.as_view()),
+     path('profile/<int:id>/', ProfileAPI.as_view()),
+     path('notification/<int:id>',ViewNotificationAPI.as_view()),
+     path('task-report/<int:userid>/', ViewTaskReport.as_view()),
 ]
 

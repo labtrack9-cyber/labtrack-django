@@ -20,6 +20,7 @@ class UserTable(models.Model):
     semester=models.CharField(max_length=20,null=True,blank=True)
     LOGINID=models.ForeignKey(LoginTable,on_delete=models.CASCADE,null=True,blank=True)
     email=models.CharField(max_length=100,null=True,blank=True)
+    Class=models.CharField(max_length=100,null=True,blank=True)
 class LabassistantTable(models.Model):
     LOGINID=models.ForeignKey(LoginTable,on_delete=models.CASCADE,null=True,blank=True)
     name=models.CharField(max_length=25,null=True,blank=True)

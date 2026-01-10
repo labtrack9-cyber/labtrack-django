@@ -6,17 +6,29 @@ from labtrackapp.models import *
 class LoginTableSerializer(ModelSerializer):
     class Meta:
         model = LoginTable
-        fields = ['username','password','usertype']
+        fields = ['username','password','usertype',]
 
 class LabTableSerializer(ModelSerializer):
     class Meta:
         model = LabTable
         fields = ['labname']
 
-class UserTableSerializer(ModelSerializer):
+class UserTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserTable
-        fields = ['admissionno','name','program','mobno','dob','gender','bloodgroup','semester','email']
+        fields = [
+            'admissionno',
+            'name',
+            'program',
+            'mobno',
+            'dob',
+            'gender',
+            'bloodgroup',
+            'semester',
+            'email',
+            'Class'
+        ]
+
 
 class LabassistantTableSerializer(ModelSerializer):
     class Meta:
@@ -54,9 +66,12 @@ class LabassignTableSerializer(ModelSerializer):
         fields = ['userLABASSISTANTID','lab']
 
 class NotificationTableSerializer(ModelSerializer):
+    assistantname=serializers.CharField(source='LABASSISTENTID.name')
     class Meta:
         model = NotificationTable
-        fields = ['USERID','LABASSISTANTID','subject','notificationdetails']
+        fields = ['USERID','LABASSISTENTID','subject','notificationdetails','assistantname']
+
+
 
 
 from rest_framework import serializers

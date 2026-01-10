@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from labtrackapp.serializers import ComplaintTableSerializer, FeedbackTableSerializer, LoginTableSerializer, StudentlabassignTableSerializer, TaskTableSerializer, UserTableSerializer
+from labtrackapp.serializers import ComplaintTableSerializer, FeedbackTableSerializer, LoginTableSerializer, NotificationTableSerializer, StudentlabassignTableSerializer, TaskTableSerializer, UserTableSerializer
 from labtrackapp.forms import *
 from labtrackapp.models import *
 
@@ -328,3 +328,61 @@ class ViewTaskAPI(APIView):
         f=TaskTableSerializer(e, many=True)
         print("---------------------",f.data)
         return Response(f.data,status=status.HTTP_200_OK)
+    
+
+
+class ProfileAPI(APIView):
+
+    def get(self, request, id):
+        try:
+            user = UserTable.objects.get(LOGINID__id=id)
+        except UserTable.DoesNotExist:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = UserTableSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        try:
+            user = UserTable.objects.get(LOGINID__id=id)
+        except UserTable.DoesNotExist:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = UserTableSerializer(
+            user,
+            data=request.data,
+            partial=True  # allows updating only selected fields
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Profile updated successfully",
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ViewNotificationAPI(APIView):
+    def get(self,request,id):
+        e=NotificationTable.objects.filter(USERID__LOGINID__id = id)
+        f=NotificationTableSerializer(e, many=True)
+        print("---------------------",f.data)
+        return Response(f.data,status=status.HTTP_200_OK)
+    
+class ViewTaskReport(APIView):
+
+    def get(self, request, userid):
+        tasks = TaskTable.objects.filter(USERID__LOGINID__id=userid)
+
+        serializer = TaskTableSerializer(tasks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
